@@ -13,6 +13,10 @@
 		7FFBD81B2727E6D400A6D439 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FFBD8192727E6D400A6D439 /* Main.storyboard */; };
 		7FFBD81D2727E6D700A6D439 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7FFBD81C2727E6D700A6D439 /* Assets.xcassets */; };
 		7FFBD8202727E6D700A6D439 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FFBD81E2727E6D700A6D439 /* LaunchScreen.storyboard */; };
+		7FFBD8282727E6F800A6D439 /* VideoPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FFBD8272727E6F800A6D439 /* VideoPlayerVC.swift */; };
+		7FFBD82A2727E7D200A6D439 /* Movies.json in Resources */ = {isa = PBXBuildFile; fileRef = 7FFBD8292727E7D200A6D439 /* Movies.json */; };
+		7FFBD82C2727F3FC00A6D439 /* CoordinationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FFBD82B2727F3FC00A6D439 /* CoordinationManager.swift */; };
+		7FFBD82E2727F42F00A6D439 /* MovieWatchingActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FFBD82D2727F42F00A6D439 /* MovieWatchingActivity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +28,11 @@
 		7FFBD81C2727E6D700A6D439 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7FFBD81F2727E6D700A6D439 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7FFBD8212727E6D700A6D439 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7FFBD8272727E6F800A6D439 /* VideoPlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerVC.swift; sourceTree = "<group>"; };
+		7FFBD8292727E7D200A6D439 /* Movies.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Movies.json; sourceTree = "<group>"; };
+		7FFBD82B2727F3FC00A6D439 /* CoordinationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinationManager.swift; sourceTree = "<group>"; };
+		7FFBD82D2727F42F00A6D439 /* MovieWatchingActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieWatchingActivity.swift; sourceTree = "<group>"; };
+		7FFBD82F2727F64E00A6D439 /* SharePlayDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SharePlayDemo.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +65,7 @@
 		7FFBD8122727E6D400A6D439 /* SharePlayDemo */ = {
 			isa = PBXGroup;
 			children = (
+				7FFBD82F2727F64E00A6D439 /* SharePlayDemo.entitlements */,
 				7FFBD8132727E6D400A6D439 /* AppDelegate.swift */,
 				7FFBD8152727E6D400A6D439 /* SceneDelegate.swift */,
 				7FFBD8172727E6D400A6D439 /* ViewController.swift */,
@@ -63,6 +73,10 @@
 				7FFBD81C2727E6D700A6D439 /* Assets.xcassets */,
 				7FFBD81E2727E6D700A6D439 /* LaunchScreen.storyboard */,
 				7FFBD8212727E6D700A6D439 /* Info.plist */,
+				7FFBD8272727E6F800A6D439 /* VideoPlayerVC.swift */,
+				7FFBD8292727E7D200A6D439 /* Movies.json */,
+				7FFBD82B2727F3FC00A6D439 /* CoordinationManager.swift */,
+				7FFBD82D2727F42F00A6D439 /* MovieWatchingActivity.swift */,
 			);
 			path = SharePlayDemo;
 			sourceTree = "<group>";
@@ -127,6 +141,7 @@
 			files = (
 				7FFBD8202727E6D700A6D439 /* LaunchScreen.storyboard in Resources */,
 				7FFBD81D2727E6D700A6D439 /* Assets.xcassets in Resources */,
+				7FFBD82A2727E7D200A6D439 /* Movies.json in Resources */,
 				7FFBD81B2727E6D400A6D439 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -138,9 +153,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FFBD82E2727F42F00A6D439 /* MovieWatchingActivity.swift in Sources */,
 				7FFBD8182727E6D400A6D439 /* ViewController.swift in Sources */,
 				7FFBD8142727E6D400A6D439 /* AppDelegate.swift in Sources */,
 				7FFBD8162727E6D400A6D439 /* SceneDelegate.swift in Sources */,
+				7FFBD8282727E6F800A6D439 /* VideoPlayerVC.swift in Sources */,
+				7FFBD82C2727F3FC00A6D439 /* CoordinationManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,9 +305,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SharePlayDemo/SharePlayDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RG62336UMN;
+				DEVELOPMENT_TEAM = US8H2WJ2JK;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SharePlayDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -302,7 +321,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = chandi.SharePlayDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chandi.SharePlayDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -315,9 +334,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SharePlayDemo/SharePlayDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RG62336UMN;
+				DEVELOPMENT_TEAM = US8H2WJ2JK;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SharePlayDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -330,7 +350,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = chandi.SharePlayDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chandi.SharePlayDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
