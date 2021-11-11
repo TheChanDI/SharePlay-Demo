@@ -6,11 +6,12 @@
 //
 
 import UIKit
-
+import Combine
 
 class ViewController: UIViewController {
     
     var movies: [MovieData]?
+    private var subscriptions = Set<AnyCancellable>()
     
     lazy var tableView: UITableView = {
        let tv = UITableView()
@@ -19,7 +20,22 @@ class ViewController: UIViewController {
         tv.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tv
     }()
-
+    
+    private var selectedMovie: MovieData? {
+        didSet {
+            // Ensure the UI selection always represents the currently playing media.
+            guard let movie = selectedMovie else { return }
+            
+            //for checking to know the one who start the activity or not
+            if !GlobalConstant.isSharablePerform {
+                let vc = VideoPlayerVC(movie: movie)
+                print("VideoPlayer VC is set ------------>")
+                navigationController?.pushViewController(vc, animated: true)
+          
+            }
+        }
+    }
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -30,11 +46,19 @@ class ViewController: UIViewController {
         tableView.frame = view.frame
         
         getData()
+       
+ 
         
-        // Do any additional setup after loading the view.
-        
+        // The movie subscriber.
+        CoordinationManager.shared.$enqueuedMovie
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .assign(to: \.selectedMovie, on: self)
+            .store(in: &subscriptions)
 
     }
+    
+    
     
     
     func getData() {

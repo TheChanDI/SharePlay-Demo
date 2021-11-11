@@ -10,48 +10,44 @@ import Combine
 import GroupActivities
 import UIKit
 
+
 class CoordinationManager {
     
     static let shared = CoordinationManager()
     
     private var subscriptions = Set<AnyCancellable>()
     
+    
     // Published values that the player, and other UI items, observe.
     @Published var enqueuedMovie: MovieData?
     @Published var groupSession: GroupSession<MovieWatchingActivity>?
     
-    var navigationController: UINavigationController?
     
     private init() {
         
         Task {
-            print("I am from init!")
+      
             // Await new sessions to watch movies together.
+            
+        
             for await groupSession in MovieWatchingActivity.sessions() {
-                // Set the app's active group session.
-                self.groupSession = groupSession
                 
+                print("group session is: \(groupSession) ----------->")
                 // Remove previous subscriptions.
                 subscriptions.removeAll()
                 
                 // Observe changes to the session state.
                 groupSession.$state.sink { [weak self] state in
-//                    if case .invalidated = state {
-//                        // Set the groupSession to nil to publish
-//                        // the invalidated session state.
-//                        self?.groupSession = nil
-//                        self?.subscriptions.removeAll()
-//                    }
-                    
                     switch state {
                       case .waiting:
                           // Received after activating activity.
                           debugPrint("session is waiting state: ----->")
-                        self?.configureSession(groupSession)
+                       
                           break;
                       case .joined:
                           // Never received after calling `session.join()`.
                           debugPrint("session is joining state: ----->")
+                      
                           break;
                       case .invalidated(let error):
                           // Never received after calling `session.leave()`, ending the FaceTime call, or after other participating user ends session for everyone.
@@ -59,6 +55,7 @@ class CoordinationManager {
                           debugPrint(error, "error during session ---------->")
                           self?.groupSession = nil
                           self?.subscriptions.removeAll()
+                          GlobalConstant.isSharablePerform = false
                           break;
   
                       default:
@@ -67,33 +64,36 @@ class CoordinationManager {
                     
                 }.store(in: &subscriptions)
                 
+                
+                
+                // Set the app's active group session.
                 groupSession.join()
                 
-//                configureSession(groupSession)
-                
+            
                 // Observe when the local user or a remote participant starts an activity.
                 groupSession.$activity.sink { [weak self] activity in
                     // Set the movie to enqueue it in the player.
                     self?.enqueuedMovie = activity.movie
+               
                 }.store(in: &subscriptions)
+                
+
+                self.groupSession = groupSession
+ 
+           
             }
+      
         }
+        
+        
+   
     }
     
-    
-    func configureSession(_ session: GroupSession<MovieWatchingActivity>) {
-        
-        guard let movie = enqueuedMovie else {return}
-        
-        let vc = VideoPlayerVC(movie: movie)
-        navigationController?.pushViewController(vc, animated: true)
-        
-    }
+
     
     // Prepares the app to play the movie.
-    func prepareToPlay(_ selectedMovie: MovieData, navigationController: UINavigationController) {
-        print("I am prepareToPLay() ------->")
-        self.navigationController = navigationController
+    func prepareToPlay(_ selectedMovie: MovieData) {
+   
         // Return early if the app enqueues the movie.
         guard enqueuedMovie != selectedMovie else { return }
         
@@ -133,6 +133,11 @@ class CoordinationManager {
                 }
             }
         }
+    }
+    
+    
+    func sessionEnd() {
+        groupSession?.leave()
     }
 }
 

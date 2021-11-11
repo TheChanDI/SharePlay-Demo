@@ -18,6 +18,8 @@ struct MovieData: Hashable, Codable {
 // A group activity to watch a movie together.
 struct MovieWatchingActivity: GroupActivity {
     
+    static var activityIdentifier: String = "com.unplug.groupActivity"
+    
     // The movie to watch.
     let movie: MovieData
     

@@ -12,7 +12,9 @@ import GroupActivities
 
 class VideoPlayerVC: UIViewController {
     
-    private let player = AVPlayer()
+    private var player = AVPlayer()
+    
+//    var rateObserver: NSKeyValueObservation?
     
     var movie: MovieData!
     private var subscriptions = Set<AnyCancellable>()
@@ -29,9 +31,10 @@ class VideoPlayerVC: UIViewController {
         let controller = AVPlayerViewController()
         controller.allowsPictureInPicturePlayback = true
 //        controller.canStartPictureInPictureAutomaticallyFromInline = true
-        controller.player = player
         return controller
     }()
+    
+    
     
     // The group session to coordinate playback with.
     private var groupSession: GroupSession<MovieWatchingActivity>? {
@@ -41,8 +44,9 @@ class VideoPlayerVC: UIViewController {
                 player.rate = 0
                 return
             }
-            // Coordinate playback with the active session.
+            print("playback coordinator is set------->")
             player.playbackCoordinator.coordinateWithSession(session)
+            player.play()
         }
     }
     
@@ -56,16 +60,14 @@ class VideoPlayerVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
         
-        observeSharePlay()
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up.fill"), style: .done, target: self, action: #selector(sharePlayTapp))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "shareplay"), style: .done, target: self, action: #selector(sharePlayTapp))
         
-        
-        
+    
         guard let playerView = playerViewController.view else {
             fatalError("Unable to get player view controller view.")
         }
@@ -75,6 +77,7 @@ class VideoPlayerVC: UIViewController {
         
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [])
+            try AVAudioSession.sharedInstance().setActive(true)
         }
         catch {
             // report for an error
@@ -83,21 +86,33 @@ class VideoPlayerVC: UIViewController {
         playerView.frame = .init(x: 0, y: 100, width: view.frame.width, height: 200)
         
         let playerItem = AVPlayerItem(url: movie.url)
-        player.replaceCurrentItem(with: playerItem)
+        player = AVPlayer(playerItem: playerItem)
+        playerViewController.player = player
+
         player.play()
-        
+        observeSharePlay()
         configureLabel()
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        CoordinationManager.shared.sessionEnd()
+//        rateObserver?.invalidate()
+        player.replaceCurrentItem(with: nil)
+        playerViewController.player = nil
+        playerViewController.dismiss(animated: true, completion: nil)
+    }
+    
     func observeSharePlay() {
-        // The movie subscriber.
-        CoordinationManager.shared.$enqueuedMovie
-            .receive(on: DispatchQueue.main)
-            .compactMap { $0 }
-            .assign(to: \.movie, on: self)
-            .store(in: &subscriptions)
         
+//        rateObserver = player.observe(\.rate, options:  [.new, .old], changeHandler: { avplayer, change in
+//            print(avplayer.rate, "player rate -------->")
+//            if avplayer.rate == 1 {
+////                print("It starts playing now..")
+//            }
+//        })
+//
         // The group session subscriber.
         CoordinationManager.shared.$groupSession
             .receive(on: DispatchQueue.main)
@@ -110,17 +125,12 @@ class VideoPlayerVC: UIViewController {
         label.frame = .init(x: 20, y: 310, width: view.frame.width - 20, height: 30)
     }
     
- 
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-
-        player.pause()
-    
-    }
     
     @objc func sharePlayTapp() {
-        CoordinationManager.shared.prepareToPlay(movie, navigationController: navigationController!)
+        //This is for to check wether you are starting the activity or not
+        //true means you are the one to start the activity.
+        GlobalConstant.isSharablePerform = true
+        CoordinationManager.shared.prepareToPlay(movie)
     }
     
 }
