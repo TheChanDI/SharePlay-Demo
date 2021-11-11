@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     
     private var selectedMovie: MovieData? {
         didSet {
-            // Ensure the UI selection always represents the currently playing media.
+      
             guard let movie = selectedMovie else { return }
             
             //for checking to know the one who start the activity or not

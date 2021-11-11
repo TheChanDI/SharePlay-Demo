@@ -17,9 +17,8 @@ class CoordinationManager {
     
     private var subscriptions = Set<AnyCancellable>()
     
-    
-    // Published values that the player, and other UI items, observe.
     @Published var enqueuedMovie: MovieData?
+    
     @Published var groupSession: GroupSession<MovieWatchingActivity>?
     
     
@@ -85,8 +84,6 @@ class CoordinationManager {
       
         }
         
-        
-   
     }
     
 
