@@ -48,12 +48,12 @@ class CoordinationManager {
                           debugPrint("session is joining state: ----->")
                       
                           break;
-                      case .invalidated(let error):
+                      case .invalidated(_):
                           // Never received after calling `session.leave()`, ending the FaceTime call, or after other participating user ends session for everyone.
-                          debugPrint("session is invalidated state: ----->")
-                          debugPrint(error, "error during session ---------->")
+                   
                           self?.groupSession = nil
                           self?.subscriptions.removeAll()
+                          self?.enqueuedMovie = nil
                           GlobalConstant.isSharablePerform = false
                           break;
   

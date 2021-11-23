@@ -28,9 +28,15 @@ class ViewController: UIViewController {
             
             //for checking to know the one who start the activity or not
             if !GlobalConstant.isSharablePerform {
-                let vc = VideoPlayerVC(movie: movie)
-                print("VideoPlayer VC is set ------------>")
-                navigationController?.pushViewController(vc, animated: true)
+                
+                navigationController?.viewControllers.forEach({ controller in
+                    if controller is ViewController {
+                        navigationController?.popToViewController(controller, animated: false)
+                        let vc = VideoPlayerVC(movie: movie)
+                        print("VideoPlayer VC is set ------------>")
+                        navigationController?.pushViewController(vc, animated: true)
+                    }
+                })
           
             }
         }

@@ -12,7 +12,7 @@ import GroupActivities
 
 class VideoPlayerVC: UIViewController {
     
-    private var player = AVPlayer()
+    private var player: AVPlayer?
     
 //    var rateObserver: NSKeyValueObservation?
     
@@ -41,12 +41,13 @@ class VideoPlayerVC: UIViewController {
         didSet {
             guard let session = groupSession else {
                 // Stop playback if a session terminates.
-                player.rate = 0
+                player?.rate = 0
                 return
             }
             print("playback coordinator is set------->")
-            player.playbackCoordinator.coordinateWithSession(session)
-            player.play()
+            print(player, "player --------->")
+            player?.playbackCoordinator.coordinateWithSession(session)
+            player?.play()
         }
     }
     
@@ -89,7 +90,7 @@ class VideoPlayerVC: UIViewController {
         player = AVPlayer(playerItem: playerItem)
         playerViewController.player = player
 
-        player.play()
+        player?.play()
         observeSharePlay()
         configureLabel()
         
@@ -99,9 +100,11 @@ class VideoPlayerVC: UIViewController {
         super.viewWillDisappear(animated)
         CoordinationManager.shared.sessionEnd()
 //        rateObserver?.invalidate()
-        player.replaceCurrentItem(with: nil)
+  
+        player?.replaceCurrentItem(with: nil)
         playerViewController.player = nil
         playerViewController.dismiss(animated: true, completion: nil)
+        player = nil
     }
     
     func observeSharePlay() {
