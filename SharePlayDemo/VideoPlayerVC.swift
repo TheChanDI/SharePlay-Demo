@@ -17,6 +17,7 @@ class VideoPlayerVC: UIViewController {
 //    var rateObserver: NSKeyValueObservation?
     
     var movie: MovieData!
+    
     private var subscriptions = Set<AnyCancellable>()
     
     lazy var label: UILabel = {
@@ -90,7 +91,7 @@ class VideoPlayerVC: UIViewController {
         player = AVPlayer(playerItem: playerItem)
         playerViewController.player = player
 
-        player?.play()
+//        player?.play()
         observeSharePlay()
         configureLabel()
         
@@ -98,8 +99,14 @@ class VideoPlayerVC: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        endVC()
+    }
+    
+    func endVC() {
         CoordinationManager.shared.sessionEnd()
 //        rateObserver?.invalidate()
+        
+        print("i am disconnecting xxxxxxxxxxxxxxxxxxxxxxxxxxx")
   
         player?.replaceCurrentItem(with: nil)
         playerViewController.player = nil
@@ -109,18 +116,19 @@ class VideoPlayerVC: UIViewController {
     
     func observeSharePlay() {
         
-//        rateObserver = player.observe(\.rate, options:  [.new, .old], changeHandler: { avplayer, change in
-//            print(avplayer.rate, "player rate -------->")
-//            if avplayer.rate == 1 {
-////                print("It starts playing now..")
-//            }
-//        })
-//
         // The group session subscriber.
         CoordinationManager.shared.$groupSession
             .receive(on: DispatchQueue.main)
             .assign(to: \.groupSession, on: self)
             .store(in: &subscriptions)
+        
+//        CoordinationManager.shared.$enqueuedMovie
+//            .receive(on: DispatchQueue.main)
+//            .compactMap { $0 }
+//            .sink(receiveValue: { [weak self]_ in
+//                self?.endVC()
+//            })
+//            .store(in: &subscriptions)
     }
     
     func configureLabel() {
@@ -136,4 +144,13 @@ class VideoPlayerVC: UIViewController {
         CoordinationManager.shared.prepareToPlay(movie)
     }
     
+    
+    func reloadData(data: MovieData) {
+        label.text = "\(data.title)"
+        let playerItem = AVPlayerItem(url: data.url)
+        player = AVPlayer(playerItem: playerItem)
+        playerViewController.player = player
+        player?.play()
+        
+    }
 }

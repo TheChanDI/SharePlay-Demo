@@ -29,14 +29,33 @@ class ViewController: UIViewController {
             //for checking to know the one who start the activity or not
             if !GlobalConstant.isSharablePerform {
                 
-                navigationController?.viewControllers.forEach({ controller in
-                    if controller is ViewController {
-                        navigationController?.popToViewController(controller, animated: false)
-                        let vc = VideoPlayerVC(movie: movie)
-                        print("VideoPlayer VC is set ------------>")
-                        navigationController?.pushViewController(vc, animated: true)
-                    }
-                })
+                
+                if navigationController!.viewControllers.count > 1 {
+                    
+                    navigationController?.viewControllers.forEach({ controller in
+                        if controller is VideoPlayerVC {
+                            let vc = controller as! VideoPlayerVC
+                            vc.reloadData(data: movie)
+                         
+                        }
+                    })
+                    
+                }
+                else {
+                    navigationController?.viewControllers.forEach({ controller in
+        
+                            if controller is ViewController {
+                                navigationController?.popToViewController(controller, animated: false)
+                                let vc = VideoPlayerVC(movie: movie)
+                                print("VideoPlayer VC is set ------------>")
+                                navigationController?.pushViewController(vc, animated: true)
+                            }
+                     
+
+                    })
+                }
+                
+
           
             }
         }

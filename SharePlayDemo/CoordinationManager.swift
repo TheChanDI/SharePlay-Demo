@@ -53,7 +53,7 @@ class CoordinationManager {
                    
                           self?.groupSession = nil
                           self?.subscriptions.removeAll()
-                          self?.enqueuedMovie = nil
+//                          self?.enqueuedMovie = nil
                           GlobalConstant.isSharablePerform = false
                           break;
   
