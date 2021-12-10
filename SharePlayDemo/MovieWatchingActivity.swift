@@ -23,6 +23,8 @@ struct MovieWatchingActivity: GroupActivity {
     // The movie to watch.
     let movie: MovieData
     
+    
+    
     // Metadata that the system displays to participants.
     var metadata: GroupActivityMetadata {
         var metadata = GroupActivityMetadata()

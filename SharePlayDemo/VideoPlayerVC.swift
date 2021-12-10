@@ -45,8 +45,6 @@ class VideoPlayerVC: UIViewController {
                 player?.rate = 0
                 return
             }
-            print("playback coordinator is set------->")
-            print(player, "player --------->")
             player?.playbackCoordinator.coordinateWithSession(session)
             player?.play()
         }
@@ -90,6 +88,7 @@ class VideoPlayerVC: UIViewController {
         let playerItem = AVPlayerItem(url: movie.url)
         player = AVPlayer(playerItem: playerItem)
         playerViewController.player = player
+        player
 
 //        player?.play()
         observeSharePlay()
@@ -104,9 +103,6 @@ class VideoPlayerVC: UIViewController {
     
     func endVC() {
         CoordinationManager.shared.sessionEnd()
-//        rateObserver?.invalidate()
-        
-        print("i am disconnecting xxxxxxxxxxxxxxxxxxxxxxxxxxx")
   
         player?.replaceCurrentItem(with: nil)
         playerViewController.player = nil
@@ -122,13 +118,6 @@ class VideoPlayerVC: UIViewController {
             .assign(to: \.groupSession, on: self)
             .store(in: &subscriptions)
         
-//        CoordinationManager.shared.$enqueuedMovie
-//            .receive(on: DispatchQueue.main)
-//            .compactMap { $0 }
-//            .sink(receiveValue: { [weak self]_ in
-//                self?.endVC()
-//            })
-//            .store(in: &subscriptions)
     }
     
     func configureLabel() {
